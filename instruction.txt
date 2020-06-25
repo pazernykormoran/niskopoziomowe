@@ -5,3 +5,11 @@ g++ main.cpp -L./libs2 -ltensorflow -lMvCameraControl -o output `pkg-config --cf
 
 
 g++ main2.cpp -ltensorflow -o output `pkg-config --cflags --libs opencv`
+
+
+taski: 
+ogarnąć końcenie połaczenia z socketem jak c++ wyłącza się bez uzycia funkcji close.
+
+zapis na serwerze ftp. 
+
+angularowa apla ktora wyswietla wszystkie foty napisana w php i nxniz
