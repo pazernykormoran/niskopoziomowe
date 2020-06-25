@@ -28,6 +28,9 @@
 #include <netinet/in.h> // struct sockaddr_in
 #include <arpa/inet.h> // inet_pton()
 
+const char * ipAddress = "192.168.1.10";
+int portNumber = 10000;
+
 
 /*
 -----------------------------TENSORFLOW--------------------------------------------------------------------------------------
@@ -91,11 +94,6 @@ bool predict(cv::Mat _image, bool& _result){
         if (_image.cols != imgH_ || _image.rows != imgW_) {
             cv::resize(_image, _image, cv::Size(imgW_, imgH_));
         }
-
-
-        cv::namedWindow("edges",1);
-        cv::imshow("edges", _image);
-        cv::waitKey(200);
 
 
         for (int i=0; i<imgS_; ++i) {
@@ -232,7 +230,6 @@ struct sockaddr_in serwer =
     .sin_family = AF_INET,
     .sin_port = htons( 10000 )
 };
-const char * ipAddress = "192.168.1.10";
 
 int tcpConnect(){
 
@@ -260,6 +257,7 @@ int tcpConnect(){
 
 
 bool sendFrame(std::string imageString, const int &s){
+  std::cout<<"Sending frame length: "<< imageString.length()<<std::endl;
   char buffer[ imageString.length()+1 ];
   strcpy(buffer,imageString.c_str());
   send( s, buffer, strlen( buffer ), 0 );
@@ -275,27 +273,35 @@ bool tcpClose( const int &s){
 */
 int main(int argc, char const* argv[]) {
 
-  std::cout<<"Test server... "<<std::endl;
+  std::cout<<"Tcp connecting... "<<std::endl;
   const int s = tcpConnect();
-  bool sended = sendFrame("Message ssssssssssssssssssssending",s);
-  bool closed = tcpClose(s);
-
+  std::cout<<"Succesfully connected to server... "<<std::endl;
+  
+  std::cout<<"Tensorflow configuring... "<<std::endl;
   bool configured = configure();
-  std::cout<<"elo"<<std::endl;
+  std::cout<<"Succesfully configured tensorflow... "<<std::endl;
+
   // cv::VideoCapture cap("rtsp://192.168.1.51:554/ch0_0.h264");
-  cv::VideoCapture cap2(0);
   // if(!cap.isOpened())  // check if we succeeded
   //   return -1;
-  
+
+  std::cout<<"Connecting to camera... "<<std::endl;
+  cv::VideoCapture cap2(0);
   if(!cap2.isOpened())  // check if we succeeded
     return -1;
-
+  std::cout<<"Succesfully connected to camera... "<<std::endl;
 
   cv::Mat newframe;
   std::string encoded_image;
+
+ 
   while(true){
-  
+    usleep(20000);
+
     cap2 >> newframe;
+    cv::namedWindow("edges",1);
+    cv::imshow("edges", newframe);
+    cv::waitKey(200);
     cv::Mat dst;
     bool result;
     predict(newframe,result);
@@ -305,7 +311,7 @@ int main(int argc, char const* argv[]) {
       encoded_image = encode_image(newframe);
       sendFrame(encoded_image,s);
     }else{
-      std::cout<<" Sending photo to server...";
+      std::cout<<std::endl;
       encoded_image = encode_image(newframe);
       sendFrame(encoded_image,s);
     }
@@ -314,6 +320,8 @@ int main(int argc, char const* argv[]) {
     // cv::imshow("edges", newframe);
     // cv::waitKey(20);
   }
+ bool closed = tcpClose(s);
+   
 }
 
 
