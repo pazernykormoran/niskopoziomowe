@@ -56,20 +56,20 @@ while True:
                 break
             
 
-            msg_rcv = json.loads(data)
+            #msg_rcv = json.loads(data)
 
-            print('Type message rcv: ', str(msg_rcv['type']))
-            print('Id message rcv: ', str(msg_rcv['id']))
+            #print('Type message rcv: ', str(msg_rcv['type']))
+            #print('Id message rcv: ', str(msg_rcv['id']))
 
-            if msg_rcv['type'] == MessageType.CAMERA.value:
-                print('Recognized type CAMERA: ', str(msg_rcv['type']))
-                print('Subtype', str(msg_rcv['subtype']))
-                self.socket_bridge.notify({'type': NotifType.SUCCESS.value, 'message': 'ModuleCamera connected'})
-                self.connections.append(connection)
-                self.connMc = connection
-                self.acceptReadMc = True
-                thread = threading.Thread(target=self.read_mc)
-                thread.start()
+            #if msg_rcv['type'] == MessageType.CAMERA.value:
+            #    print('Recognized type CAMERA: ', str(msg_rcv['type']))
+            #    print('Subtype', str(msg_rcv['subtype']))
+            #    self.socket_bridge.notify({'type': NotifType.SUCCESS.value, 'message': 'ModuleCamera connected'})
+            #    self.connections.append(connection)
+            #    self.connMc = connection
+            #    self.acceptReadMc = True
+            #    thread = threading.Thread(target=self.read_mc)
+            #    thread.start()
 
     finally:
         connection.close()
