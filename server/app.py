@@ -48,10 +48,14 @@ while True:
     try:
         print( 'client connected:', client_address)
         while True:
-            data = connection.recv(16)
-            print("reseived", data)
+            newdata = connection.recv(1024)
+            print("reseived", newdata)
+            while newdata:
+                data += newdata
+                newdata = None
             if data:
-                connection.sendall(data)
+                # connection.sendall(data)
+                print(data)
             else:
                 break
             
