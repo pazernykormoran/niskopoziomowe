@@ -1,0 +1,4 @@
+models/
+photos/
+__pycache__/
+*.zip
