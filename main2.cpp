@@ -318,8 +318,8 @@ int main(int argc, char const* argv[]) {
             sendFrame(encoded_image,s);
         }else{
             std::cout<<std::endl;
-            encoded_image = encode_image(newframe);
-            sendFrame(encoded_image,s);
+            // encoded_image = encode_image(newframe);
+            // sendFrame(encoded_image,s);
         }
 
         // cv::namedWindow("edges",1);
