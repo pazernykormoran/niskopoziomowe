@@ -1,4 +1,4 @@
-# Projekt programowanie niskopoziomowe
+## Projekt programowanie niskopoziomowe - aplikacja wykrywająca włamywacza na kamerze i wysyłająca zdjęcia na serwer oraz wyświetlająca je na stronie internetowej.
 
 ## Plan działania
 
@@ -36,6 +36,8 @@ Kolejnym krokiem było zapisanie modelu w odpowiednim folderze aby aplikacja c++
 
 ## 2. Stworzenie aplikacji w C++
 
+![server-working](documentation/cpp-working.png)
+
 Kod źródłowy aplikacji c++ znajduje się w głównym katalogu w pliku main2.cpp. W trakcie uruchamiania kompilowany jest także plik Utils.cpp. Jest to plik zawierający funkcje które są pomocne przy działaniu modelu tensorflow.
 
 Funkcja main: 
@@ -44,6 +46,8 @@ Funkcja main:
 - Łączy się z kamerą korzystając z OpenCv. 
 - Wchodzi w pętlę która zbiera zdjęcia z kamery, wyświetla je i przewiduje każde z nich na podstawie wyżej skonfigurowanego modelu tensorflow. Jeśli zdjęcie zostanie przewidziane jako good (czyli włamywacz jest na zdjęciu), zostaje ono wysłane na serwer. 
 
+Próba zbierania obrazu z kamerki IP w sieci lokalnej zakończyła się powodzeniem ale były na tyle duże "lagi" że w dalszej części używam tylko kamerki z laptopa. Lagi mogą wynikać z tego, że kamerka podłączona jest do sieci przez wifi więc transfer może być niestabilny.  
+
 ## 3. Komunikacja między aplikacją w c++ na komputerze a serwerem na raspberryPi:
 
 Aby przesłać zdjęcia korzystam z kodowania ich za pomocą base64. Za kodowanie po stronie c++ odpowiada funkcja base64_encode. Na serwerze gdzie korzystam z pythona funkcja do dekodowania jest zaimplementowana w paczce o nazwie base64.
@@ -51,6 +55,8 @@ Aby przesłać zdjęcia korzystam z kodowania ich za pomocą base64. Za kodowani
 Zdjęcia przesyłane są partiami po 1024 bajty.
 
 ## 4. Aplikacja na raspberryPi (server):
+
+![server-working](documentation/server-working.png)
 
 Kod źródłowy znajduje się w folderze "server".
 
@@ -67,15 +73,32 @@ https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md
 
 - Stworzenie aplikacji w jezyku php która wyświetla zdjęcia na stronie.
 
-Kod źódłowy znajduje się w folderze php-server
-W systemie powyższy folder znajduje się w katalogu /var/www
-W powyszym katalogu znajduje się folder html/photos. To właśnie tutaj zapisywane są zdjęcia które serwer tcp odbiera od klienta tcp (aplikacji c++).
+![site](documentation/site.png)
+
+Kod źódłowy znajduje się w folderze php-server.
+W systemie powyższy folder znajduje się w katalogu /var/www.
+W powyszym katalogu znajduje się folder html/photos. To właśnie tutaj zapisywane są zdjęcia, które serwer tcp odbiera od klienta tcp (aplikacji c++).
 
 W kodzie php został użyty "ajax" czyli asynchroniczne zapytania które mają na celu wczytanie coraz większej ilości zdjęć włamywacza bez konieczności przeładowywania strony. 
 
 Dzięki temu, że mam publiczne ip. Otwierając port 80 byłem w stanie stronę upublicznić w sieci i mieć wgląd w nowe zdjęcia włamywacza nawet z poza sieci lokalnej. 
 
+## 4. Działanie systemu (gify) :
+
+Poniższe gify obrazują działanie systemu w czasie rzeczywistym: 
+
+Aplikacja c++:
+
+Działanie aplikacji C++.
+
+![server-working](documentation/real-life-working1.gif)
 
 
+Działanie aplikacji C++ oraz serwera na raspberryPi jednocześnie. (Z razpberry dostęp zdalny do pulpitu za pomocą VNC).
+
+![server-working](documentation/rasp-cpp-working.gif)
 
 
+Działanie podglądu na stronie internetowej w czasie rzeczywistym.
+
+![server-working](documentation/site-working.gif)
