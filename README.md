@@ -24,19 +24,19 @@ Bad:
 
 Good: 
 
-![dataset-bad-screenphoto](documentation/dataset-good-screen.png)
+![dataset-good-screenphoto](documentation/dataset-good-screen.png)
 
 Nastepnie model został wytrenowany oraz pobrany na dysk
 
-![dataset-bad-screenphoto](documentation/performance.png)
+![performance](documentation/performance.png)
 
-![dataset-bad-screenphoto](documentation/export-model-process.png)
+![export-model-process](documentation/export-model-process.png)
 
 Kolejnym krokiem było zapisanie modelu w odpowiednim folderze aby aplikacja c++ mogła z niego korzystać. 
 
 ## 2. Stworzenie aplikacji w C++
 
-![server-working](documentation/cpp-working.png)
+![cpp-working](documentation/cpp-working.png)
 
 Kod źródłowy aplikacji c++ znajduje się w głównym katalogu w pliku main2.cpp. W trakcie uruchamiania kompilowany jest także plik Utils.cpp. Jest to plik zawierający funkcje które są pomocne przy działaniu modelu tensorflow.
 
@@ -91,14 +91,14 @@ Aplikacja c++:
 
 Działanie aplikacji C++.
 
-![server-working](documentation/real-life-working1.gif)
+![real-life-working1](documentation/real-life-working1.gif)
 
 
 Działanie aplikacji C++ oraz serwera na raspberryPi jednocześnie. (Do raspberry dostęp zdalny do pulpitu za pomocą VNC).
 
-![server-working](documentation/rasp-cpp-working.gif)
+![rasp-cpp-working](documentation/rasp-cpp-working.gif)
 
 
 Działanie podglądu na stronie internetowej w czasie rzeczywistym.
 
-![server-working](documentation/site-working.gif)
+![site-working](documentation/site-working.gif)
