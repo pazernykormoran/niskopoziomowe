@@ -43,10 +43,10 @@ function myLoop() {         //  create a loop function
     loadDoc() ; 
 	console.log('hello'); 
     i++;                    //  increment the counter
-    if (i < 10) {           //  if the counter < 10, call the loop function
+    //if (i < 10) {           //  if the counter < 10, call the loop function
       myLoop();             //  ..  again which will trigger another 
-    }                       //  ..  setTimeout()
-  }, 3000)
+    //}                       //  ..  setTimeout()
+  }, 1000)
 }
 
 myLoop();
