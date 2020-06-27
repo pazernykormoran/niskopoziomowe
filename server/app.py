@@ -24,7 +24,7 @@ def save_data(img):
     imgdata = base64.b64decode(img)
     frame = imgdata
     can_return = True
-    filename = 'photos/some_image'+str(random())+'.jpg'  # I assume you have a way of picking unique filenames
+    filename = '/var/www/html/photos/some_image'+str(random())+'.jpg'  # I assume you have a way of picking unique filenames
     with open(filename, 'wb') as f:
         f.write(imgdata)
 
@@ -41,11 +41,18 @@ def run_socket_server():
     while True:
         print("waiting for connection")
         connection, client_address = sock.accept()
-        connection.settimeout(0.01)
+        
         try:
             print( 'client connected:', client_address)
             while True:
-                time.sleep(0.01)
+                connection.settimeout(0.01)
+                try:
+                    connection.send(bytes('hello', 'UTF-8'))
+                except socket.error as e:
+                    print("error connection")
+                    connection.close()
+
+                # time.sleep(0.1)
                 full_data = ""
                 data_recv = ""
                 try:
@@ -60,7 +67,21 @@ def run_socket_server():
             
                 if len(full_data)>0:
                     print("data received length: ", len(full_data))
+                    # sent = connection.sendall(str(len(full_data)).encode())
+                    # print("sent: ", sent)
+                    # try: 
+                    #     data_recv = connection.recv(1024)
+                    # except socket.timeout as tme: 
+                    #     print("nothing received back, dont saving")
+                    #     continue
+
+                    # print("received length: ", data_recv)
+                    # if data_recv == b'true':
+                    print("correct, saving")
                     save_data(full_data)
+
+        except Exception as e: 
+            print("Broken connection, closing")
 
 
         finally:
