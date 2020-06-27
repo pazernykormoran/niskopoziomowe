@@ -7,10 +7,10 @@
   - zbierać zdjęcia z kamery.
   - sprawdzać czy jest na nich włamywacz za pomocą modelu tensorflow.
   - Wysyłać pozytywnie przewidziane zdjęcia. (Klient tcp)
-- Stworzenie komunikacji tcp między aplikacją c++ oraz aplikacją na raspberryPi w tej samej lokalnej sieci. (Przesyłwanie zdjęć)
+- Stworzenie komunikacji tcp między aplikacją c++ oraz aplikacją na raspberryPi w tej samej lokalnej sieci. (Przesyłanie zdjęć)
 - Stworzenie aplikacji w pythonie na raspberryPi która będzie: 
   - Odbierać zdjęcia.(Serwer tcp)
-  - Zapisywać zdjęcia na dysku rasppberryPi.
+  - Zapisywać zdjęcia na dysku.
 - Stworzenie serwera www na raspberryPi oraz strony internetowej na której będą wyświetlać się zdjęcia 
 
 ## 1. Wytrenowanie modelu tensorflow rozpozającego włamywacza. 
@@ -64,7 +64,7 @@ Serwer został zaimplementowany w języku Python.
 
 Serwer odpowiada za odbieranie zdjęć partiami po 1024 bajty, łączenie ich w całość oraz dekodowanie z base64 a następnie zapisanie ich na dysku w folderze /var/www/html/photos.
 
-## 4. Strona internetowa wyświetlająca zdjęcia włamywacza:
+## 5. Strona internetowa wyświetlająca zdjęcia włamywacza:
 
 - Postawienie serwera Apache na raspberryPi: 
 
@@ -83,7 +83,7 @@ W kodzie php został użyty "ajax" czyli asynchroniczne zapytania które mają n
 
 Dzięki temu, że mam publiczne ip. Otwierając port 80 byłem w stanie stronę upublicznić w sieci i mieć wgląd w nowe zdjęcia włamywacza nawet z poza sieci lokalnej. 
 
-## 4. Działanie systemu (gify) :
+## 6. Działanie systemu (gify) :
 
 Poniższe gify obrazują działanie systemu w czasie rzeczywistym: 
 
