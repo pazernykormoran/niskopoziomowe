@@ -94,7 +94,7 @@ Działanie aplikacji C++.
 ![server-working](documentation/real-life-working1.gif)
 
 
-Działanie aplikacji C++ oraz serwera na raspberryPi jednocześnie. (Z razpberry dostęp zdalny do pulpitu za pomocą VNC).
+Działanie aplikacji C++ oraz serwera na raspberryPi jednocześnie. (Do raspberry dostęp zdalny do pulpitu za pomocą VNC).
 
 ![server-working](documentation/rasp-cpp-working.gif)
 
