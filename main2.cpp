@@ -16,18 +16,14 @@
 #include <stdlib.h>
 #include <thread>
 #include <string>
-
-
-// #include "include/MvCameraControl.h"
-
 #include <stdio.h>
-#include <stdlib.h> // exit()
-#include <string.h> // strlen()
+#include <stdlib.h> 
+#include <string.h> 
 #include <stdbool.h>
 
-#include <sys/socket.h> // socket()
-#include <netinet/in.h> // struct sockaddr_in
-#include <arpa/inet.h> // inet_pton()
+#include <sys/socket.h> 
+#include <netinet/in.h> 
+#include <arpa/inet.h> 
 
 const char * ipAddress = "192.168.1.10";
 int portNumber = 10000;
@@ -304,12 +300,12 @@ int main(int argc, char const* argv[]) {
     cv::Mat newframe;
     std::string encoded_image;
 
- 
+    cv::namedWindow("edges",1);
     while(true){
-        usleep(1000000);
+        usleep(50000);
 
         cap2 >> newframe;
-        cv::namedWindow("edges",1);
+        
         cv::imshow("edges", newframe);
         cv::waitKey(200);
         cv::Mat dst;

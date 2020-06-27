@@ -67,17 +67,6 @@ def run_socket_server():
             
                 if len(full_data)>0:
                     print("data received length: ", len(full_data))
-                    # sent = connection.sendall(str(len(full_data)).encode())
-                    # print("sent: ", sent)
-                    # try: 
-                    #     data_recv = connection.recv(1024)
-                    # except socket.timeout as tme: 
-                    #     print("nothing received back, dont saving")
-                    #     continue
-
-                    # print("received length: ", data_recv)
-                    # if data_recv == b'true':
-                    print("correct, saving")
                     save_data(full_data)
 
         except Exception as e: 
@@ -88,31 +77,7 @@ def run_socket_server():
             connection.close()
     
 
-# app = Flask(__name__)
-
-# def render_template():
-#     template = '<html><head><title>Video Streaming Demonstration</title></head><body><h1>Video Streaming Demonstration</h1><img src="/vide_feed"></body></html>'
-
-# @app.route('/')
-# def index():
-#     return render_template()
-
-# @app.route('/test')
-# def test():
-#     return "test", 200
-
-# def gen():
-#     while True:
-#         frame = get_frame()
-#         yield (b'--frame\r\n'
-#                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-# @app.route('/video_feed')
-# def video_feed():
-#     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
 if __name__ == '__main__':
     socket_server = threading.Thread(target=run_socket_server)
     socket_server.start()
     time.sleep(2)
-    # app.run(host="127.0.0.1",debug=True)
