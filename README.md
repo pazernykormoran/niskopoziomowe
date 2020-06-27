@@ -13,11 +13,69 @@
   - Zapisywać zdjęcia na dysku rasppberryPi.
 - Stworzenie serwera www na raspberryPi oraz strony internetowej na której będą wyświetlać się zdjęcia 
 
-app that uses tensorflow to detect objects on camera and than sending detected data through tcp to server. 
+## 1. Wytrenowanie modelu tensorflow rozpozającego włamywacza. 
+Zebrany został zbiór danych oraz wrzucony do usługi Azure Custom Vision.
 
-Tworzenie serwera www na raspberry. 
+Zbiór danych składa się ze zdjęć które przedstawiają włamywacza (good) oraz takich które go nie przedstawiają (bad)
+
+Bad: 
+
+![dataset-bad-screenphoto](documentation/dataset-bad-screen.png)
+
+Good: 
+
+![dataset-bad-screenphoto](documentation/dataset-good-screen.png)
+
+Nastepnie model został wytrenowany oraz pobrany na dysk
+
+![dataset-bad-screenphoto](documentation/performance.png)
+
+![dataset-bad-screenphoto](documentation/export-model-process.png)
+
+Kolejnym krokiem było zapisanie modelu w odpowiednim folderze aby aplikacja c++ mogła z niego korzystać. 
+
+## 2. Stworzenie aplikacji w C++
+
+Kod źródłowy aplikacji c++ znajduje się w głównym katalogu w pliku main2.cpp. W trakcie uruchamiania kompilowany jest także plik Utils.cpp. Jest to plik zawierający funkcje które są pomocne przy działaniu modelu tensorflow.
+
+Funkcja main: 
+- Łączy się poprzez tcp z serwerem (raspberryPi w sieci lokalnej)
+- konfiguruje tensorflowa co sprowadza się do wczytania grafu i stworzenia wejściowych i wyjściowych tensorów.
+- Łączy się z kamerą korzystając z OpenCv. 
+- Wchodzi w pętlę która zbiera zdjęcia z kamery, wyświetla je i przewiduje każde z nich na podstawie wyżej skonfigurowanego modelu tensorflow. Jeśli zdjęcie zostanie przewidziane jako good (czyli włamywacz jest na zdjęciu), zostaje ono wysłane na serwer. 
+
+## 3. Komunikacja między aplikacją w c++ na komputerze a serwerem na raspberryPi:
+
+Aby przesłać zdjęcia korzystam z kodowania ich za pomocą base64. Za kodowanie po stronie c++ odpowiada funkcja base64_encode. Na serwerze gdzie korzystam z pythona funkcja do dekodowania jest zaimplementowana w paczce o nazwie base64.
+
+Zdjęcia przesyłane są partiami po 1024 bajty.
+
+## 4. Aplikacja na raspberryPi (server):
+
+Kod źródłowy znajduje się w folderze "server".
+
+Serwer został zaimplementowany w języku Python.
+
+Serwer odpowiada za odbieranie zdjęć partiami po 1024 bajty, łączenie ich w całość oraz dekodowanie z base64 a następnie zapisanie ich na dysku w folderze /var/www/html/photos.
+
+## 4. Strona internetowa wyświetlająca zdjęcia włamywacza:
+
+- Postawienie serwera Apache na raspberryPi: 
+
+aby postawić serwer korzystałem z tego tutoriala:
 https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md
 
-## 1. Wytrenowanie modelu tensorflow rozpozającego włamywacza. 
+- Stworzenie aplikacji w jezyku php która wyświetla zdjęcia na stronie.
 
-## 2. sdfsd
+Kod źódłowy znajduje się w folderze php-server
+W systemie powyższy folder znajduje się w katalogu /var/www
+W powyszym katalogu znajduje się folder html/photos. To właśnie tutaj zapisywane są zdjęcia które serwer tcp odbiera od klienta tcp (aplikacji c++).
+
+W kodzie php został użyty "ajax" czyli asynchroniczne zapytania które mają na celu wczytanie coraz większej ilości zdjęć włamywacza bez konieczności przeładowywania strony. 
+
+Dzięki temu, że mam publiczne ip. Otwierając port 80 byłem w stanie stronę upublicznić w sieci i mieć wgląd w nowe zdjęcia włamywacza nawet z poza sieci lokalnej. 
+
+
+
+
+
