@@ -1,4 +1,5 @@
 models/
-photos/
+./photos/
+./server/photos/
 __pycache__/
 *.zip
