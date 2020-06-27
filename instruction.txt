@@ -4,7 +4,7 @@ g++ main.cpp -L./libs2 -ltensorflow -lMvCameraControl -o output `pkg-config --cf
 
 
 
-g++ main2.cpp -ltensorflow -o output `pkg-config --cflags --libs opencv`
+g++ main2.cpp Utils.cpp -ltensorflow -o output `pkg-config --cflags --libs opencv`
 
 
 taski: 

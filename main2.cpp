@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <thread>
+#include <string>
 
 
 // #include "include/MvCameraControl.h"
@@ -237,34 +238,43 @@ int tcpConnect(){
     const int s = socket( serwer.sin_family, SOCK_STREAM, 0 );
     connect( s,( struct sockaddr * ) & serwer, sizeof( serwer ) );
 
-   
-    // while( recv( s, buffer, sizeof( buffer ), 0 ) > 0 )
-    // {
-    //     // puts( buffer );
-    //     // if( entireWebsidedLoaded( buffer ) )
-    //     // {
-    //     //     strcpy( buffer, "^]" ); /// exit character
-    //     //     send( s, buffer, strlen( buffer ), 0 );
-    //     //     break;
-    //     // }
-
-    //     std::cout<<"Receaved: "<<  buffer<<std::endl;
-    // }
-   
     return s;
 }
 
 
 
 bool sendFrame(std::string imageString, const int &s){
-  std::cout<<"Sending frame length: "<< imageString.length()<<std::endl;
-  char buffer[ imageString.length()+1 ];
-  strcpy(buffer,imageString.c_str());
-  send( s, buffer, strlen( buffer ), 0 );
+    std::cout<<"Sending frame length: "<< imageString.length()<<std::endl;
+    char buffer[ imageString.length()+1 ];
+    strcpy(buffer,imageString.c_str());
+    send( s, buffer, strlen( buffer ), 0 );
+
+    // char recvBuffer[ 1024 ];
+    // std::string confirmation = "true";
+    // char confirm[confirmation.length()+1];
+    // strcpy(confirm,confirmation.c_str());
+    // if( recv( s, recvBuffer, sizeof( recvBuffer ), 0 ) > 0 ){
+    //     std::cout<< "received  buffer length: "<< recvBuffer<< std::endl;
+    //     if(std::to_string(imageString.length()) == std::string(recvBuffer)){
+    //     //    
+    //         std::cout<<"correctly sent";
+    //         send( s, confirm, strlen( confirm ), 0 );
+    //     }
+    // }
+    
+        // puts( buffer );
+        // if( entireWebsidedLoaded( buffer ) )
+        // {
+        //     strcpy( buffer, "^]" ); /// exit character
+        //     send( s, buffer, strlen( buffer ), 0 );
+        //     break;
+        // }
+
+
 }
 
 bool tcpClose( const int &s){
-  shutdown( s, SHUT_RDWR );
+    shutdown( s, SHUT_RDWR );
 }
 
 
@@ -273,54 +283,54 @@ bool tcpClose( const int &s){
 */
 int main(int argc, char const* argv[]) {
 
-  std::cout<<"Tcp connecting... "<<std::endl;
-  const int s = tcpConnect();
-  std::cout<<"Succesfully connected to server... "<<std::endl;
-  
-  std::cout<<"Tensorflow configuring... "<<std::endl;
-  bool configured = configure();
-  std::cout<<"Succesfully configured tensorflow... "<<std::endl;
+    std::cout<<"Tcp connecting... "<<std::endl;
+    const int s = tcpConnect();
+    std::cout<<"Succesfully connected to server... "<<std::endl;
+    
+    std::cout<<"Tensorflow configuring... "<<std::endl;
+    bool configured = configure();
+    std::cout<<"Succesfully configured tensorflow... "<<std::endl;
 
-  // cv::VideoCapture cap("rtsp://192.168.1.51:554/ch0_0.h264");
-  // if(!cap.isOpened())  // check if we succeeded
-  //   return -1;
+    // cv::VideoCapture cap("rtsp://192.168.1.51:554/ch0_0.h264");
+    // if(!cap.isOpened())  // check if we succeeded
+    //   return -1;
 
-  std::cout<<"Connecting to camera... "<<std::endl;
-  cv::VideoCapture cap2(0);
-  if(!cap2.isOpened())  // check if we succeeded
-    return -1;
-  std::cout<<"Succesfully connected to camera... "<<std::endl;
+    std::cout<<"Connecting to camera... "<<std::endl;
+    cv::VideoCapture cap2(0);
+    if(!cap2.isOpened())  // check if we succeeded
+        return -1;
+    std::cout<<"Succesfully connected to camera... "<<std::endl;
 
-  cv::Mat newframe;
-  std::string encoded_image;
+    cv::Mat newframe;
+    std::string encoded_image;
 
  
-  while(true){
-    usleep(20000);
+    while(true){
+        usleep(1000000);
 
-    cap2 >> newframe;
-    cv::namedWindow("edges",1);
-    cv::imshow("edges", newframe);
-    cv::waitKey(200);
-    cv::Mat dst;
-    bool result;
-    predict(newframe,result);
-    std::cout<<"resutl: "<< result;
-    if(result){
-      std::cout<<" Sending photo to server...";
-      encoded_image = encode_image(newframe);
-      sendFrame(encoded_image,s);
-    }else{
-      std::cout<<std::endl;
-      encoded_image = encode_image(newframe);
-      sendFrame(encoded_image,s);
+        cap2 >> newframe;
+        cv::namedWindow("edges",1);
+        cv::imshow("edges", newframe);
+        cv::waitKey(200);
+        cv::Mat dst;
+        bool result;
+        predict(newframe,result);
+        std::cout<<"resutl: "<< result;
+        if(result){
+            std::cout<<" Sending photo to server...";
+            encoded_image = encode_image(newframe);
+            sendFrame(encoded_image,s);
+        }else{
+            std::cout<<std::endl;
+            encoded_image = encode_image(newframe);
+            sendFrame(encoded_image,s);
+        }
+
+        // cv::namedWindow("edges",1);
+        // cv::imshow("edges", newframe);
+        // cv::waitKey(20);
     }
-
-    // cv::namedWindow("edges",1);
-    // cv::imshow("edges", newframe);
-    // cv::waitKey(20);
-  }
- bool closed = tcpClose(s);
+    bool closed = tcpClose(s);
    
 }
 
