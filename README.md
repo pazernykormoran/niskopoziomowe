@@ -1,5 +1,8 @@
 ## Projekt programowanie niskopoziomowe - aplikacja wykrywająca włamywacza na kamerze i wysyłająca zdjęcia na serwer oraz wyświetlająca je na stronie internetowej.
 
+## Działanie w skrócie: 
+Aplikacja c++ zbiera w czasie rzeczywistym obrazy z kamery. Dla każdego obrazu sprawdza (za pomocą modelu tensorflow), czy jest na nim włamywacz. Jeśli jest, to wysyła zdjęcie na serwer tcp, napisany w Pythonie postawiony na raspberryPi, który zapisuje zdjęcia na dysku raspberry.  Dodatkowo na raspberryPi działa server Apache oraz stworzona jest strona internetowa dzięki której można podlądać zapisane zdjęcia. 
+
 ## Plan działania
 
 - Wytrenowanie modelu tensorflow rozpozającego włamywacza. 
